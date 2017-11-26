@@ -22,11 +22,11 @@ class NowPlaying::Movie
   end
 
   def summary
-    @summary ||= plot_summary_doc.search("p.plotSummary").text.strip
+    @summary ||= plot_summary_doc.css("#titleStoryLine div p").text.strip
   end
 
   def stars
-    @stars ||= doc.search("div[itemprop='actors'] span[itemprop='name']").collect{|e| e.text.strip}.join(", ")
+    @stars ||= doc.search("span[itemprop='actors'] span[itemprop='name']").collect{|e| e.text.strip}.join(", ")
   end
 
   private
@@ -37,7 +37,7 @@ class NowPlaying::Movie
     end
 
     def plot_summary_doc
-      @plot_summary_doc ||= Nokogiri::HTML(open("#{self.url}plotsummary"))
+      @plot_summary_doc ||= Nokogiri::HTML(open("#{self.url}"))
     end
 
     def doc
